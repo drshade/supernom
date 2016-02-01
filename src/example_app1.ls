@@ -1,5 +1,5 @@
 
-supernom = require '../supernom'
+cmdnom = (require './supernom').cmdnom
 
 cmdtree = do
    _help: 'Example application showing off the power of supernom'
@@ -35,4 +35,4 @@ cmdtree <<<
          console.log "Executing task2 with parameter3: #{opts.parameter3} and parameter4: #{opts.parameter4}"
 
 # Run!
-supernom.execute cmdtree, process.argv
+cmdnom.execute cmdtree, process.argv

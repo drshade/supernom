@@ -1,5 +1,5 @@
 _ = require 'prelude-ls'
-storydrive = require '../storydrive'
+storydrive = (require './supernom').storydrive
 
 cmdtree =
    "stop service {service}": (service) ->
