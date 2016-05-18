@@ -1,12 +1,7 @@
 
 _ = require 'prelude-ls'
+utils = require './utils'
 path = require 'path'
-
-startsWith = (xs, x) ->
-   if x |> _.empty then
-      true
-   else
-      ((x |> _.head) == (xs |> _.head)) and ((xs |> _.tail) `startsWith` (x |> _.tail))
 
 deepcopy = (obj) -> obj |> JSON.stringify |> JSON.parse
 
@@ -24,7 +19,7 @@ printHelp = (cmdtree, cmd) ->
 
    subcmds = cmdtree
                |> _.Obj.obj-to-pairs
-               |> _.reject ([key, value]) -> key `startsWith` "_"
+               |> _.reject ([key, value]) -> key `utils.string-starts-with` "_"
 
    if subcmds |> _.empty then
       # print available options
@@ -110,7 +105,7 @@ executeCmdTree = (cmdtree, argv, acc_cmd, acc_opts) ->
    else
       argument = argv |> _.head
 
-      if argument `startsWith` "--" then
+      if argument `utils.string-starts-with` "--" then
          argument = argument |> _.drop 2
 
          # Force --help into the cmdtree._opts obj (weird but true)

@@ -1,10 +1,5 @@
 _ = require 'prelude-ls'
-
-startsWith = (xs, x) ->
-   if x |> _.empty then
-      true
-   else
-      ((x |> _.head) == (xs |> _.head)) and ((xs |> _.tail) `startsWith` (x |> _.tail))
+utils = require './utils'
 
 extractStoryVariables = (story) ->
    # eg "scale {service} to {number} instances"
@@ -36,7 +31,7 @@ extractFunctionVariables = (a_function) ->
 
 # Simpler tokeniser - probably should do this better to include support for
 # quoted values e.g. "example name" as a single token
-tokenise = (x) -> (x.match /\S+/g) || []
+tokenise = (x) -> (x.match /(?:((?:\{[^\}]+\})|(?:'[^']+')|(?:\<[^\>]+\>)|\w+)|@)/g) || []
 
 list-to-obj = (root, xs) -->
    lastitem = xs
@@ -49,7 +44,7 @@ list-to-obj = (root, xs) -->
    lastitem
 
 module.exports =
-   execute: (cmdtree, cmdtext) ->
+   execute: (cmdtree, cmdtext, unable_to_resolve_handler) ->
       root = {}
       cmdtree
          |> _.Obj.obj-to-pairs
@@ -79,7 +74,7 @@ module.exports =
                         subtree
                            |> _.Obj.obj-to-pairs
                            |> _.map ([k,v]) -> k
-                           |> _.find (k) -> k `startsWith` '{'
+                           |> _.find (k) -> k `utils.string-starts-with` '{'
 
                      if variable? then
                         # Deepen
@@ -94,7 +89,8 @@ module.exports =
 
       if not func? then
          console.log "Unable to resolve function call"
-
+         if unable_to_resolve_handler? then
+            unable_to_resolve_handler cmdtext
       else
          # Extract variables from function
          function_variables = extractFunctionVariables func

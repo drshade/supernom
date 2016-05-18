@@ -5,8 +5,8 @@ cmdtree =
    "stop service {service}": (service) ->
       console.log "Stopping service #{service}..."
 
-   "start service {service}": (service) ->
-      console.log "Starting service #{service}..."
+   "start service {service}@{instance}": (service, instance) ->
+      console.log "Starting service #{service}@#{instance}..."
 
    "start host {hostname}": (hostname) ->
       console.log "Starting host #{hostname}..."
