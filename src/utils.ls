@@ -2,13 +2,14 @@
 _ = require 'prelude-ls'
 
 string-starts-with = (xs, x) ->
-   if x |> _.empty then
-      true
-   else
+   | x |> _.empty => true
+   | otherwise =>
       ((x |> _.head) == (xs |> _.head)) and ((xs |> _.tail) `string-starts-with` (x |> _.tail))
 
-string-ends-with = (x) ->
-   x
+string-ends-with = (xs, x) ->
+   | x |> _.empty => true
+   | otherwise =>
+      ((x |> _.last) == (xs |> _.last)) and ((xs |> _.initial) `string-ends-with` (x |> _.initial))
 
 module.exports =
    string-starts-with: string-starts-with
