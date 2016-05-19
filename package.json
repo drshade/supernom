@@ -1,6 +1,6 @@
 {
   "name": "supernom",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Super simple command line parser and execution framework",
   "main": "lib/supernom.js",
   "scripts": {

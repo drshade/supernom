@@ -11,6 +11,9 @@ string-ends-with = (xs, x) ->
    | otherwise =>
       ((x |> _.last) == (xs |> _.last)) and ((xs |> _.initial) `string-ends-with` (x |> _.initial))
 
+deepcopy = (obj) -> obj |> JSON.stringify |> JSON.parse
+
 module.exports =
    string-starts-with: string-starts-with
    string-ends-with: string-ends-with
+   deepcopy: deepcopy
